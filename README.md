@@ -2,8 +2,6 @@
 
 A deep learning-based tool for precise face segmentation using BiSeNet trained on the CelebAMask-HQ dataset. This tool extracts faces from images with a transparent background, perfect for creating profile pictures, avatars, or creative photo editing.
 
-![Face Segmentation Demo](https://i.imgur.com/placeholder.jpg)
-
 ## Features
 
 - Accurate face and hair segmentation with transparent background
