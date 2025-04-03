@@ -122,6 +122,15 @@ self.keep_classes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 18]
 - **Multiple faces detected**: The app works best with a single face per image.
 - **Poor segmentation**: For best results, use images with good lighting and a clear face.
 - **CUDA out of memory**: Try using a smaller image or run on CPU if your GPU has limited memory.
+- **PyTorch class path error**: If you encounter an error like "Tried to instantiate class '**path**.\_path', but it does not exist!", try updating your PyTorch version to 1.9.0 or newer using `pip install torch==1.9.0 torchvision==0.10.0`. This is a known issue with certain PyTorch versions when loading models.
+
+## PyTorch Version Compatibility
+
+This project is tested with PyTorch 1.7.0 to 1.13.0. If you encounter model loading issues with newer PyTorch versions (2.x), try downgrading to PyTorch 1.13.0:
+
+```bash
+pip install torch==1.13.0 torchvision==0.14.0
+```
 
 ## References
 

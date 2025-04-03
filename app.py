@@ -6,6 +6,7 @@ import streamlit as st
 import mediapipe as mp
 from PIL import Image
 import os
+torch.classes.__path__ = []
 
 class FaceHairSegmenter:
     def __init__(self):
@@ -37,8 +38,20 @@ class FaceHairSegmenter:
             # Initialize BiSeNet with 19 classes (for CelebAMask-HQ)
             model = BiSeNet(n_classes=19)
             
-            # Load the pretrained weights
-            model.load_state_dict(torch.load('bisenet.pth', map_location=torch.device('cpu')))
+            # Try to load the pretrained weights using a safer approach
+            try:
+                # First attempt: standard loading
+                model.load_state_dict(torch.load('bisenet.pth', map_location=torch.device('cpu')))
+            except RuntimeError as e:
+                if "__path__._path" in str(e):
+                    # Alternative loading approach if we encounter the class path error
+                    print("Using alternative model loading approach...")
+                    checkpoint = torch.load('bisenet.pth', map_location='cpu', weights_only=True)
+                    model.load_state_dict(checkpoint)
+                else:
+                    # Other type of RuntimeError, re-raise
+                    raise
+            
             model.eval()
             
             if torch.cuda.is_available():
@@ -48,6 +61,9 @@ class FaceHairSegmenter:
             return model
         except Exception as e:
             print(f"Error loading model: {e}")
+            # Let's provide a more detailed error message to help with debugging
+            import traceback
+            traceback.print_exc()
             return None
 
     def detect_faces(self, image):
